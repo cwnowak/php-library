@@ -47,4 +47,14 @@ $airship = new Airship($APP_KEY, $APP_MASTER_SECRET);
 //$broadcast_message = array('aps'=>array('alert'=>'hello to all'));
 //$airship->broadcast($broadcast_message, array($TEST_DEVICE_TOKEN));
 
+
+
+// Push to iOS and Android
+$device_tokens = array('00678A3644CBACD16A708BCDC0FC5EB79E9043B8C9798E45CD03DE6D59864383','008374D6505AD92EA2B8E75EE3638E785FB2EC98DB938251054ED809FDA5CE6E');
+$apids = array('0251c0f5-3b7f-4297-85b4-11c3690cbd73','02798860-2d55-433c-9fb4-df237580b2e1');
+$msg = 'Test from UA!';
+//(text to send, device tokens in array, apids in array, aliases, tags, sound for iOS, badge number for icon)
+$send = $airship->push_all($msg, $device_tokens, $apids, null, null, "default", "+1");
+$pushid = json_decode($send[1]); // <= the blast id from urban airship
+
 ?>
