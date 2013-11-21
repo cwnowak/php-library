@@ -177,6 +177,70 @@ class Airship {
             throw new AirshipFailure($response[1], $response_code);
         }
     }
+    
+    public function push_ios($payload, $device_tokens=null, $aliases=null, $tags=null) {
+        if ($device_tokens != null) {
+            $payload['device_tokens'] = $device_tokens;
+        }
+        if ($aliases != null) {
+            $payload['aliases'] = $aliases;
+        }
+        if ($tags != null) {
+            $payload['tags'] = $tags;
+        }
+        $body = json_encode($payload);
+        $response = $this->_request(PUSH_URL, 'POST', $body, 'application/json');
+        $response_code = $response[0];
+        if ($response_code != 200) {
+            throw new AirshipFailure($response[1], $response_code);
+        }
+        return $response;
+    }
+    
+    public function push_android($payload, $apids=null, $aliases=null, $tags=null) {
+        if ($apids != null) {
+            $payload['apids'] = $apids;
+        }
+        if ($aliases != null) {
+            $payload['aliases'] = $aliases;
+        }
+        if ($tags != null) {
+            $payload['tags'] = $tags;
+        }
+        $body = json_encode($payload);
+        $response = $this->_request(PUSH_URL, 'POST', $body, 'application/json');
+        $response_code = $response[0];
+        if ($response_code != 200) {
+            throw new AirshipFailure($response[1], $response_code);
+        }
+        return $response;
+    }
+    
+    public function push_all($message, $device_tokens=array(), $apids=array(), $aliases=null, $tags=null, $sound = 'default', $badge = "+1") {
+		if($device_tokens) {
+			$payload['aps']=array('alert'=>$message,'sound'=>$sound,'badge'=>$badge);
+			$payload['device_tokens'] = $device_tokens;
+		}
+		if($apids) {
+			$payload['android']=array('alert'=>$message);
+			$payload['apids'] = $apids;
+		}
+		if ($aliases != null) {
+            $payload['aliases'] = $aliases;
+        }
+        if ($tags != null) {
+            $payload['tags'] = $tags;
+        }
+        
+        $body = json_encode($payload);
+        $response = $this->_request(PUSH_URL, 'POST', $body, 'application/json');
+        $response_code = $response[0];
+        if ($response_code != 200) {
+            throw new AirshipFailure($response[1], $response_code);
+        }
+        return $response;
+    }
+
 
     // Broadcast this payload to all users.
     public function broadcast($payload, $exclude_tokens=null) {
