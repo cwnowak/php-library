@@ -18,7 +18,7 @@ Functionality
 The library handles these parts of the API:
 
  * device token registration
- * basic push
+ * basic push to ios and android
  * registering and pushing with tags
  * broadcast
  * feedback service
